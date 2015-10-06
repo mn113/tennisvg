@@ -117,16 +117,22 @@ var tennisvg = {
 		});
 //		console.log(data);
 		switch (dest) {
-		case 'players':
+		case 'player1':
 			var t = $(this.g.players).children("text");
 			t.filter(":first").text(input[0]);
-			t.filter(":last").text(input[1]);
+			break;
+		case 'player2':
+			var t = $(this.g.players).children("text");
+			t.filter(":last").text(input[0]);
 			break;
 
-		case 'netstats':
+		case 'netstats1':
 			var t = $(this.g.netstats).children().children("tspan");	// tspans are 2 deep
 			t.filter(":first").text(data[0] + '/' + data[1]);
-			t.filter(":last").text(data[2] + '/' + data[3]);
+			break;
+		case 'netstats2':
+			var t = $(this.g.netstats).children().children("tspan");	// tspans are 2 deep
+			t.filter(":last").text(data[0] + '/' + data[1]);
 			break;
 
 		case 'returnstats1':	// Fallthrough case
@@ -248,24 +254,34 @@ var tennisvg = {
 
 		return;
 	},
+
+	// Populate the entire SVG (well, one player's half!) from a single JSON object:
+	jsonPopulate: function (who, json) {
+		var suffix = (who == 'p2') ? '2' : '1';
+//		console.log(who, suffix, json);
+		this.populate('player' + suffix, [json.name]);	// populate() needs array
+		this.populate('netstats' + suffix, json.np);
+		this.populate('groundies' + suffix, json.gz);
+		this.populate('returnzones' + suffix, json.rz);
+		this.populate('returnstats' + suffix, json.rs);
+		this.populate('servestats' + suffix, json.ss);
+		this.populate('serve_box_deuce' + suffix, json.sbd.concat(json.sbdwl));
+		this.populate('serve_box_ad' + suffix, json.sba.concat(json.sbawl));
+		this.populate('aces_deuce' + suffix, json.sbda);
+		this.populate('aces_ad' + suffix, json.sbaa);			
+		return;
+	},
 	
 	// Set the mode of stats display (serve, return, groundies):
 	setMode: function (mode) {
 		// Set mode:
 		this.mode = mode ? mode : 'mode_groundies';		// use a default if mode not passed
-		console.log(this.mode);
+//		console.log(this.mode);
 		// Enable flip button (in case previously disabled):
 		$("#switcher #flip").prop("disabled", false);
 		// Modeswitcher:
 		switch (this.mode) {
 		case 'mode_serve':
-			// Populate SVG data:
-//			this.populate('servestats1', [70, 60, 50]);
-//			this.populate('serve_box_deuce1', [55, 20, 25, 8, 4, 5, 1, 7, 7, 4, 0, 1]);
-//			this.populate('serve_box_ad1', [43, 26, 31, 3, 4, 0, 1, 7, 9, 0, 2, 10]);
-//			this.populate('servestats2', [62, 53, 44]);
-//			this.populate('serve_box_deuce2', [55, 20, 25, 8, 4, 5, 1, 7, 7, 4, 0, 1]);
-//			this.populate('serve_box_ad2', [43, 26, 31, 3, 4, 0, 1, 7, 9, 0, 2, 10]);
 			// Show+hide groups:
 			this.svgHideAll();
 			if (!this.isFlipped) {
@@ -276,11 +292,6 @@ var tennisvg = {
 			break;
 
 		case 'mode_return':
-			// Populate SVG data:
-//			this.populate('returnstats1', [66]);
-//			this.populate('returnzones1', [10, 15, 20, 7, 12, 16, 4, 7, 9]);	// sum = 99
-//			this.populate('returnstats2', [55]);
-//			this.populate('returnzones2', [13, 9, 11, 17, 8, 11, 11, 5, 14]);	// sum = 99
 			// Show+hide groups:
 			this.svgHideAll();
 			if (!this.isFlipped) {
@@ -291,10 +302,6 @@ var tennisvg = {
 			break;
 
 		case 'mode_groundies':
-			// Populate SVG data:
-//			this.populate('groundies1', [40, 10, 50]);
-//			this.populate('groundies2', [30, 40, 30]);
-//			this.populate('netstats', [1, 9, 7, 9]);
 			// Show+hide groups:
 			this.svgHideAll();
 			this.svgShow([this.g.gzones1, this.g.gzones2, this.g.netstats]);
@@ -318,7 +325,7 @@ var tennisvg = {
 		
 		// Change isFlipped flag:
 		this.isFlipped = !this.isFlipped;
-		console.log("Flipped!" + this.isFlipped);
+//		console.log("Flipped!" + this.isFlipped);
 
 		// Refresh SVG with new data:
 		this.setMode(this.mode);			// CAUSING ERROR?
@@ -338,8 +345,6 @@ var tennisvg = {
 
 // jQuery ready function:
 $(function () {
-
-//	var tennisvg = tennisvg || {}; 	 // "take it or make it"
 	
 	// Select SVG object:
 	tennisvg.theSVG = document.getElementById("tennisvg");
@@ -347,11 +352,6 @@ $(function () {
 	tennisvg.theSVG.addEventListener("load", function () {
 		// MAIN EXECUTION STARTS:
 		tennisvg.init();
-
-		// Test populate:
-		var players = ['P1', 'P2'];
-		tennisvg.populate('players', players);
-
 	}, false);	// no callback
 	
 	// Set up surface buttons:
@@ -372,6 +372,7 @@ $(function () {
 		event.preventDefault();
 	});
 
+	// Set up match dropdown actions:
 	$("#matches").on("change", function () {
 		// Load match byline in H2 below:
 		$("#match_info h2").html($("#matches option:selected").text());
@@ -388,24 +389,8 @@ $(function () {
 //		console.log(p1_json);
 //		console.log(p2_json);
 		// Populate SVG with data:
-		tennisvg.populate('players', [p1_json.name, p2_json.name]);
-		tennisvg.populate('netstats', [p1_json.np[0], p1_json.np[1], p2_json.np[0], p2_json.np[1]]);
-		tennisvg.populate('groundies2', p1_json.gz);
-		tennisvg.populate('groundies1', p2_json.gz);
-		tennisvg.populate('returnzones2', p1_json.rz);
-		tennisvg.populate('returnzones1', p2_json.rz);
-		tennisvg.populate('returnstats2', p1_json.rs);
-		tennisvg.populate('returnstats1', p2_json.rs);
-		tennisvg.populate('servestats2', p1_json.ss);
-		tennisvg.populate('servestats1', p2_json.ss);
-		tennisvg.populate('serve_box_deuce2', p1_json.sbd.concat(p1_json.sbdwl));	// reverse?
-		tennisvg.populate('serve_box_ad2', p1_json.sba.concat(p1_json.sbawl));
-		tennisvg.populate('serve_box_deuce1', p2_json.sbd.concat(p2_json.sbdwl));
-		tennisvg.populate('serve_box_ad1', p2_json.sba.concat(p2_json.sbawl));		// reverse?
-		tennisvg.populate('aces_deuce2', p1_json.sbda);
-		tennisvg.populate('aces_ad2', p1_json.sbaa);
-		tennisvg.populate('aces_deuce1', p2_json.sbda);
-		tennisvg.populate('aces_ad1', p2_json.sbaa);
+		tennisvg.jsonPopulate('p1', p1_json);
+		tennisvg.jsonPopulate('p2', p2_json);
 	});
 		
 }); // end jQuery
