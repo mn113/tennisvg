@@ -1,0 +1,12 @@
+p {
+	font-weight: bold;
+}
+
+input {
+	width: 20px;
+}
+
+.DjoFed, .AzaSha, .FerNad {
+	display: none;
+}
+

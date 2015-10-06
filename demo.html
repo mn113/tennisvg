@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Tennis DataVis</title>
+		<link rel="stylesheet" href="tennisvg.css">
+	</head>
+	<body>
+		<object id="tennisvg" data="court.svg" type="image/svg+xml"></object>
+		
+		<form id="switcher">
+			<button id="surface_hard">Hard</button>
+			<button id="surface_grass">Grass</button>
+			<button id="surface_clay">Clay</button>
+			<br />
+			<button id="mode_serve">Serve</button>
+			<button id="mode_return">Returns</button>
+			<button id="mode_groundies">Groundies / Net</button>
+			<br />
+			<button id="flip" disabled="true">Flip!</button>
+		</form>
+		<br />
+		<form id="matches">
+			<select>
+				<option value="">Select match:</option>
+				<option value="DjoFed" data-surface="grass">Djokovic d. Federer 7-6 6-7 6-4 6-3, Wimbledon 2015</option>
+				<option value="AzaSha" data-surface="hard">Azarenka d. Sharapova 6-3 6-1, Beijing 2012</option>
+				<option value="FerNad" data-surface="clay">Ferrer d. Nadal 7-6 6-4, Monte Carlo 2014</option>
+			</select>
+		</form>
+		<div id="match_info">
+			<h2></h2>
+			<h3>JSON:</h3>
+			<code class="DjoFed">{"name":"Djokovic","ss":[66,74,60],"sbd":[42,17,41],"sbdwl":[19,13,8,5,24,7],"sbda":[3,0,3],"sba":[38,4,58],"sbawl":[19,7,3,0,27,13],"sbaa":[4,0,3],"rs":[34],"rz":[15,15,15,62,62,62,23,23,23],"gz":[94,79,115],"np":[16,26]}</code>
+			<br />
+			<code class="DjoFed">{"name":"Federer","ss":[67,74,49],"sbd":[55,20,25],"sbdwl":[20,16,5,2,19,10],"sbda":[3,0,5],"sba":[41,10,49],"sbawl":[20,8,5,2,24,10],"sbaa":[3,0,3],"rs":[31],"rz":[33,33,33,46,46,46,21,21,21],"gz":[64,82,104],"np":[49,65]}</code>
+			
+			<code class="AzaSha">{"name":"Azarenka","ss":[72.9,67.4,50.0],"sbd":[26,26,48],"sbdwl":[5,3,7,1,11,4],"sbda":[0,0,0],"sba":[32,54,14],"sbawl":[5,4,6,9,3,1],"sbaa":[0,0,0],"rs":[67.8],"rz":[0,0,0,31,31,31,11,11,11],"gz":[38,80,32],"np":[1,1]}</code>
+			<br />
+			<code class="AzaSha">{"name":"Sharapova","ss":[66.1,56.8,26.3],"sbd":[28,17,55],"sbdwl":[5,3,2,3,8,8],"sbda":[1,0,1],"sba":[59,15,26],"sbawl":[7,9,0,4,5,3],"sbaa":[0,0,0],"rs":[75],"rz":[3,3,3,37,37,37,15,15,15],"gz":[45,71,46],"np":[1,3]}</code>
+
+			<code class="FerNad">{"name":"Ferrer","ss":[],"sbd":[],"sbdwl":[],"sbda":[],"sba":[],"sbawl":[],"sbaa":[],"rs":[],"rz":[],"gz":[],"np":[]}</code>
+			<br />
+			<code class="FerNad">{"name":"Nadal","ss":[],"sbd":[],"sbdwl":[],"sbda":[],"sba":[],"sbawl":[],"sbaa":[],"rs":[],"rz":[],"gz":[],"np":[]}</code>
+		</div>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="jquery.svg.package-1.5.0/jquery.svg.js"></script>
+		<script src="jquery.svg.package-1.5.0/jquery.svgdom.js"></script>
+		<script src="tennisvg.js"></script>
+	</body>
+</html>
