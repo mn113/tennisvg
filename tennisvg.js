@@ -113,7 +113,7 @@ var tennisvg = {
 	populate: function (dest, input) {
 		// Integerise all numbers:
 		var data = input.map(function (x) { 		// FAILS IN IE<=8
-			return parseInt(Math.round(x));			// SCREWS UP PLAYERS
+			return parseInt(Math.round(x));
 		});
 //		console.log(data);
 		switch (dest) {
