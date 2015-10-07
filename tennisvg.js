@@ -119,20 +119,20 @@ var tennisvg = {
 		switch (dest) {
 		case 'player1':
 			var t = $(this.g.players).children("text");
-			t.filter(":first").text(input[0]);
+			t.filter(":last").text(input[0]);
 			break;
 		case 'player2':
 			var t = $(this.g.players).children("text");
-			t.filter(":last").text(input[0]);
+			t.filter(":first").text(input[0]);
 			break;
 
 		case 'netstats1':
 			var t = $(this.g.netstats).children().children("tspan");	// tspans are 2 deep
-			t.filter(":first").text(data[0] + '/' + data[1]);
+			t.filter(":last").text(data[0] + '/' + data[1]);
 			break;
 		case 'netstats2':
 			var t = $(this.g.netstats).children().children("tspan");	// tspans are 2 deep
-			t.filter(":last").text(data[0] + '/' + data[1]);
+			t.filter(":first").text(data[0] + '/' + data[1]);
 			break;
 
 		case 'returnstats1':	// Fallthrough case
@@ -257,18 +257,35 @@ var tennisvg = {
 
 	// Populate the entire SVG (well, one player's half!) from a single JSON object:
 	jsonPopulate: function (who, json) {
-		var suffix = (who == 'p2') ? '2' : '1';
+		who = (who == 'p2') ? 'p1' : 'p2';			// This is where necessary reversal of p1 & p2 occurs
 //		console.log(who, suffix, json);
-		this.populate('player' + suffix, [json.name]);	// populate() needs array
-		this.populate('netstats' + suffix, json.np);
-		this.populate('groundies' + suffix, json.gz);
-		this.populate('returnzones' + suffix, json.rz);
-		this.populate('returnstats' + suffix, json.rs);
-		this.populate('servestats' + suffix, json.ss);
-		this.populate('serve_box_deuce' + suffix, json.sbd.concat(json.sbdwl));
-		this.populate('serve_box_ad' + suffix, json.sba.concat(json.sbawl));
-		this.populate('aces_deuce' + suffix, json.sbda);
-		this.populate('aces_ad' + suffix, json.sbaa);			
+		if (who == 'p1') {
+			this.populate('player1', [json.name]);	// populate() needs array
+			this.populate('netstats1', json.np);
+			this.populate('groundies1', json.gz);
+			this.populate('returnzones1', json.rz);
+			this.populate('returnstats1', json.rs);
+			this.populate('servestats1', json.ss);
+			this.populate('serve_box_deuce1', json.sbd.concat(json.sbdwl));
+			this.populate('serve_box_ad1', json.sba.concat(json.sbawl));
+			this.populate('aces_deuce1', json.sbda);
+			this.populate('aces_ad1', json.sbaa);
+		} else if (who == 'p2') {
+			this.populate('player2', [json.name]);	// populate() needs array
+			this.populate('netstats2', json.np);
+			this.populate('groundies2', json.gz.reverse());	// reverse data because rotated 180º
+			this.populate('returnzones2', json.rz);
+			this.populate('returnstats2', json.rs);
+			this.populate('servestats2', json.ss);
+			var sbd2 = json.sbd.reverse(),					// reverse data because rotated 180º
+				sba2 = json.sba.reverse(),					// reverse data because rotated 180º
+				sbdwl2 = json.sbdwl.reverse(),				// reverse data because rotated 180º
+				sbawl2 = json.sbawl.reverse();				// reverse data because rotated 180º
+			this.populate('serve_box_deuce2', sbd2.concat(sbdwl2));	// join 3 + 6
+			this.populate('serve_box_ad2', sba2.concat(sbawl2));	// join 3 + 6
+			this.populate('aces_deuce2', json.sbda.reverse());	// reverse data because rotated 180º
+			this.populate('aces_ad2', json.sbaa.reverse());		// reverse data because rotated 180º
+		}
 		return;
 	},
 	
@@ -276,48 +293,36 @@ var tennisvg = {
 	setMode: function (mode) {
 		// Set mode:
 		this.mode = mode ? mode : 'mode_groundies';		// use a default if mode not passed
-//		console.log(this.mode);
-		// Enable flip button (in case previously disabled):
-		$("#switcher #flip").prop("disabled", false);
 		// Modeswitcher:
-		switch (this.mode) {
-		case 'mode_serve':
-			// Show+hide groups:
-			this.svgHideAll();
-			if (!this.isFlipped) {
-				this.svgShow([this.g.svln_dc1, this.g.svln_ad1, this.g.svbox_dc1, this.g.svbox_ad1, this.g.servestats1]);
-			} else {
-				this.svgShow([this.g.svln_dc2, this.g.svln_ad2, this.g.svbox_dc2, this.g.svbox_ad2, this.g.servestats2]);
-			}
+		this.svgHideAll();
+
+		switch (this.mode) {	// NB: Player 1 is on top, but their serve/return stats are in the bottom (2) half 
+		case 'mode_serve1':
+			this.svgShow([this.g.svln_dc2, this.g.svln_ad2, this.g.svbox_dc2, this.g.svbox_ad2, this.g.servestats2]);
+			break;			
+			
+		case 'mode_serve2':
+			this.svgShow([this.g.svln_dc1, this.g.svln_ad1, this.g.svbox_dc1, this.g.svbox_ad1, this.g.servestats1]);
 			break;
 
-		case 'mode_return':
-			// Show+hide groups:
-			this.svgHideAll();
-			if (!this.isFlipped) {
-				this.svgShow([this.g.retzones1, this.g.returnstats1]);
-			} else {
-				this.svgShow([this.g.retzones2, this.g.returnstats2]);
-			}
+		case 'mode_return1':
+			this.svgShow([this.g.retzones2, this.g.returnstats2]);
+			break;
+			
+		case 'mode_return2':
+			this.svgShow([this.g.retzones1, this.g.returnstats1]);
 			break;
 
 		case 'mode_groundies':
-			// Show+hide groups:
-			this.svgHideAll();
 			this.svgShow([this.g.gzones1, this.g.gzones2, this.g.netstats]);
-			// Disable flip button:
-			$("#switcher #flip").prop("disabled", true);
-			break;
-				
-		default:
-			console.log(mode, 'not set');	
+			break;				
 		} // end switch
 
 		return;
 	},
 	
 	// Flip the displayed stats (for serve and return modes only):
-	flip: function () {
+/*	flip: function () {
 		// Quit function if not the right mode:
 		if (this.mode !== 'mode_serve' && this.mode !== 'mode_return') {
 			return false;
@@ -332,7 +337,7 @@ var tennisvg = {
 		
 		return true;
 	},
-
+*/
 	init: function () {
 		console.log("tennisvg.init(): ", this);
 		this.setupCourt();
