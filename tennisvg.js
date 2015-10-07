@@ -139,7 +139,8 @@ var tennisvg = {
 			var t = $(this.g.returnstats1).children().children("tspan");	// tspans are 2 deep
 		case 'returnstats2':
 			if (!t) { var t = $(this.g.returnstats2).children().children("tspan"); }	// tspans are 2 deep
-			t.text(data[0]);
+			t.filter(":first").text(data[0]);
+			t.filter(":last").text(data[1]);
 			break;
 
 		case 'servestats1':		// Fallthrough case
@@ -393,6 +394,11 @@ $(function () {
 		var p2_json = JSON.parse($("#match_info code:visible:eq(1)").text());
 //		console.log(p1_json);
 //		console.log(p2_json);
+		// Change button text:
+		$("#mode_serve1 span").text(p1_json.name);
+		$("#mode_serve2 span").text(p2_json.name);
+		$("#mode_return1 span").text(p1_json.name);
+		$("#mode_return2 span").text(p2_json.name);
 		// Populate SVG with data:
 		tennisvg.jsonPopulate('p1', p1_json);
 		tennisvg.jsonPopulate('p2', p2_json);

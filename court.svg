@@ -42,7 +42,7 @@
 	<text x="155" y="55">8</text>
 	<text x="155" y="85">7</text>
 	</g>
-<g id="return_zones_1" fill="black" opacity="!">
+<g id="return_zones_1" fill="black" opacity="1">
 	<rect id="z17" x="19" y="66" width="31" height="45" fill="url(#fadeout1)" opacity=".14"></rect>
 	<rect id="z27" x="50" y="66" width="40" height="45" fill="url(#fadeout1)" opacity=".15"></rect>
 	<rect id="z37" x="90" y="66" width="31" height="45" fill="url(#fadeout1)" opacity=".20"></rect>
@@ -197,10 +197,12 @@
 	<text x="70" y="57">2nd serve pts won: <tspan>0</tspan>%</text>
 	</g>
 <g id="return_stats_1" font-size="10px" opacity="1">
-	<text x="70" y="200" text-anchor="middle">Returns in play: <tspan>0</tspan>%</text>
+	<text x="70" y="195" text-anchor="middle">Returns in play: <tspan>0</tspan>%</text>
+	<text x="70" y="207" text-anchor="middle">Return pts won: <tspan>0</tspan>%</text>
 	</g>
 <g id="return_stats_2" font-size="10px" opacity="1">
-	<text x="70" y="45" text-anchor="middle">Returns in play: <tspan>0</tspan>%</text>
+	<text x="70" y="40" text-anchor="middle">Returns in play: <tspan>0</tspan>%</text>
+	<text x="70" y="52" text-anchor="middle">Return pts won: <tspan>0</tspan>%</text>
 	</g>
 <g id="net_stats" font-size="10px" opacity="1">
 	<text x="70" y="100">Points won at net
