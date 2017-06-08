@@ -1,12 +1,71 @@
-p {
-	font-weight: bold;
+/**********/
+/* Basics */
+/**********/
+body {
+	color: black;
+	font: 12px Helvetica, Arial, sans-serif;
+	line-height: 1em;
 }
 
-input {
-	width: 20px;
+p {
+	font-weight: bold;
 }
 
 .DjoFed, .AzaSha, .FerNad {
 	display: none;
 }
 
+#user_input {
+	display: none;	
+}
+
+textarea {
+	width: 200px;
+	height: 200px;
+}
+
+
+/********************/
+/* JSONguide styles */
+/********************/
+#jsonguide {
+	position: absolute;
+	bottom: 1em;
+	right: 1em;
+	width: 500px;
+	height: 500px;
+	border: 1px solid grey;
+	background: #eee;
+	padding: 1em;
+	overflow: scroll;
+}
+
+.close {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+}
+
+table {
+	width: 550px;	
+}
+
+td, th {
+	text-align: left;
+	padding: 5px 0;	
+}
+
+td:nth-child(1) {
+
+	font-family: monospace;
+}
+
+td:nth-child(2) {
+	color: #999;
+	font-weight: bold;
+	margin: 1em;
+}
+
+ts:nth-child(3) {
+	width: 70%;
+}

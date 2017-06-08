@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Tennis DataVis</title>
+		<link rel="stylesheet" href="tennisvg.css">
+	</head>
+	<body>
+	<div id="content">
+	<h2>JSON input guide</h2>
+	<p></p>
+	<button class="close" onclick="javascript:$('#jsonguide').hide();">X</button>
+	<table>
+		<thead>
+			<th>key</th><th>type(length)</th><th>description</th>
+		</thead>
+		<tbody>
+			<tr>
+				<td>"name"</td>
+				<td>String</td>
+				<td>The player's <b>last name</b>.</td>
+			</tr>
+			<tr>
+				<td>"ss"</td>
+				<td>Array(3)</td>
+				<td><b>Serve Stats.</b> Three numbers, indicating (1) First serve percentage; (2) First serve points won percentage; (3) Second serve points won percentage.</td>
+			</tr>
+			<tr>
+				<td>"sbd"</td>
+				<td>Array(3)</td>
+				<td><b>Serve Box Deuce.</b> Three numbers, indicating percentage of serves aimed wide, central, or down-the-T. Absolute numbers can also be used.</td>
+			</tr>
+			<tr>
+				<td>"sbdwl"</td>
+				<td>Array(6)</td>
+				<td><b>Serve Box Deuce Win-Loss.</b> Six numbers: the absolute number of points for wide serve win/loss, body serve win/loss, T serve win/loss.</td>
+			</tr>
+			<tr>
+				<td>"sbda"</td>
+				<td>Array(3)</td>
+				<td><b>Serve Box Deuce Aces.</b> Three numbers: aces hit on wide, body, T serves on the deuce court.</td>
+			</tr>
+			<tr>
+				<td>"sba"</td>
+				<td>Array(3)</td>
+				<td><b>Serve Box Ad.</b> Same format as sbd. The order here continues from left to right, i.e. T-serves, body serves, wide serves.</td>
+			</tr>
+			<tr>
+				<td>"sbawl"</td>
+				<td>Array(6)</td>
+				<td><b>Serve Box Ad Win-Loss.</b> Same format as sbdwl. Ordered from T to wide, win-loss-win-loss-win-loss.</td>
+			</tr>
+			<tr>
+				<td>"sbaa"</td>
+				<td>Array(3)</td>
+				<td><b>Serve Box Ad Aces.</b> Same format as sbda. Aces hit on T, body, wide serves on the Ad court.</td>
+			</tr>
+			<tr>
+				<td>"rs"</td>
+				<td>Array(2)</td>
+				<td><b>Return Stats.</b> Two numbers: first is percent of returns in play, second is percent of return points won.</td>
+			</tr>
+			<tr>
+				<td>"rz"</td>
+				<td>Array(9)</td>
+				<td><b>Return Zones.</b> Nine numbers indicating zones on the court where returns are hit to. The first three are shallow returns (inside service box), left middle and right. Then mid-depth returns, left middle and right. Then deep returns (last quarter of the court), left middle and right. Absolute numbers or percentages can be used.</td>
+			</tr>
+			<tr>
+				<td>"gz"</td>
+				<td>Array(3)</td>
+				<td><b>Groundstroke Zones.</b> Three numbers, indicating percentage of groundstrokes aimed to the right/forehand corner (assuming righties), middle 40%, and left/backhand corner. Absolute numbers of shots also work.</td>
+			</tr>
+			<tr>
+				<td>"np"</td>
+				<td>Array(2)</td>
+				<td><b>Net Points.</b> Two numbers, net points won, and total net points played.</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</body>
