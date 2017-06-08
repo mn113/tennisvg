@@ -45,7 +45,10 @@ The project is in early development. The code could still use a lot of work to b
 
 ## Contributing
 
-Contributions are welcome! Please [open an issue]() or [make a PR]() or simply send me a message.
+Contributions are welcome! Please [open an issue](issues/) or [make a PR](pulls/) or simply send me a message:
+
+![contact](http://marthost.uk/gh-contact.png)
+
 
 #### Ideas
 
